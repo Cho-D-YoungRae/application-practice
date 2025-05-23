@@ -10,3 +10,6 @@
   - client
   - core-api
   - core-enum
+- 패키지/그룹 명 수정
+  - [logging](./support/logging/src/main/resources/logback)
+  - [gradle.properties](./gradle.properties)
