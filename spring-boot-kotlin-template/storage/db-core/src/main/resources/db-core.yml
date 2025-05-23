@@ -1,0 +1,146 @@
+spring:
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        default_batch_fetch_size: 300
+        query.fail_on_pagination_over_collection_fetch: true
+        format_sql: true
+        use_sql_comments: true
+
+  sql:
+    init:
+      mode: never
+
+storage:
+  datasource:
+    core:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: ${DATABASE_URL}
+      username: ${DATABASE_USERNAME}
+      password: ${DATABASE_PASSWORD}
+      hikari:
+        pool-name: core-db-pool
+        minimum-idle: 5
+        maximum-pool-size: 5
+        connection-timeout: 1100
+        validation-timeout: 1000
+        keepalive-time: 30000
+        max-lifetime: 1800000
+        data-source-properties:
+          rewriteBatchedStatements: true
+          socketTimeout: 3000
+          cachePrepStmts: true
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          useServerPrepStmts: true
+          useLocalSessionState: true
+          cacheResultSetMetadata: true
+          cacheServerConfiguration: true
+          elideSetAutoCommits: true
+          maintainTimeStats: false
+
+---
+spring:
+  config.activate.on-profile: local
+
+
+storage:
+  datasource:
+    core:
+      jdbc-url: jdbc:mysql://localhost:3306/template
+      username: root
+      password:
+
+logging.level:
+  org.hibernate:
+    SQL: debug
+    orm.jdbc.bind: trace
+
+---
+spring:
+  config.activate.on-profile: local-dev
+
+logging.level:
+  org.hibernate:
+    SQL: debug
+    orm.jdbc.bind: trace
+
+---
+spring:
+  config.activate.on-profile: dev
+
+---
+spring:
+  config.activate.on-profile: live
+
+storage:
+  datasource:
+    core:
+      hikari:
+        minimum-idle: 20
+        maximum-pool-size: 30
+
+---
+spring:
+  config.activate.on-profile: batch
+
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 100
+          batch_versioned_data: false
+        order_inserts: true
+        order_updates: true
+
+storage:
+  datasource:
+    core:
+      hikari:
+        minimum-idle: 0
+        maximum-pool-size: 1
+        data-source-properties:
+          socketTimeout: 0
+
+logging.level:
+  org.hibernate:
+    SQL: info
+    orm.jdbc.bind: info
+
+---
+spring:
+  config.activate.on-profile: worker
+
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 100
+          batch_versioned_data: false
+        order_inserts: true
+        order_updates: true
+
+---
+spring:
+  config.activate.on-profile: test
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+storage:
+  datasource:
+    core:
+      jdbc-url: jdbc:h2:mem:test-db;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+
+logging.level:
+  org.hibernate:
+    SQL: debug
+    orm.jdbc.bind: trace

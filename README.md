@@ -1,5 +1,7 @@
 # application-practice
 
-## 기능
+## Feature
 
-## 구현
+## Simulation
+
+## Implementation
