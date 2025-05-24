@@ -1,0 +1,43 @@
+example:
+  api:
+    url: https://default.example.example
+
+spring.cloud.openfeign:
+  client:
+    config:
+      example-api:
+        connectTimeout: 2100
+        readTimeout: 5000
+        loggerLevel: full
+  compression:
+    response:
+      enabled: false
+  httpclient:
+    max-connections: 2000
+    max-connections-per-route: 500
+
+---
+spring:
+  config.activate.on-profile: local
+
+---
+spring:
+  config.activate.on-profile:
+    - local-dev
+    - dev
+
+---
+spring:
+  config.activate.on-profile:
+    - live
+
+  cloud.openfeign:
+    client:
+      config:
+        example-api:
+          loggerLevel: full
+
+example:
+  api:
+    url: https://live.example.example
+
