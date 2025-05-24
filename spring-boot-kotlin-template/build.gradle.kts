@@ -72,13 +72,13 @@ subprojects {
     extra["snippetsDir"] = file("build/generated-snippets")
 
     tasks.withType<Test> {
-        useJUnitPlatform {
-            excludeTags("develop", "restdocs")
-        }
+        useJUnitPlatform()
     }
 
     tasks.test {
-        outputs.dir(project.extra["snippetsDir"]!!)
+        useJUnitPlatform {
+            excludeTags("develop", "restdocs")
+        }
     }
 
     tasks.register<Test>("unitTest") {
@@ -100,6 +100,7 @@ subprojects {
         useJUnitPlatform {
             includeTags("restdocs")
         }
+        outputs.dir(project.extra["snippetsDir"]!!)
     }
 
     tasks.register<Test>("developTest") {
@@ -110,7 +111,6 @@ subprojects {
     }
 
     tasks.getByName("asciidoctor") {
-        inputs.dir(project.extra["snippetsDir"]!!)
         dependsOn("restDocsTest")
     }
 }

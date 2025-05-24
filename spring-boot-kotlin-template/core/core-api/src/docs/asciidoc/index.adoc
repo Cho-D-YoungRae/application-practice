@@ -1,0 +1,20 @@
+= API Docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:snippets: build/generated-snippets
+
+== API
+
+[example-get]
+=== Example GET
+
+operation::example/example-get[snippets='curl-request,http-request,path-parameters,query-parameters,http-response,response-fields']
+
+[example-post]
+=== Example POST
+
+operation::example/example-post[snippets='curl-request,http-request,request-fields,http-response']

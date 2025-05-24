@@ -46,7 +46,7 @@ abstract class RestDocsTest {
                 documentationConfiguration(restDocumentation)
                     .operationPreprocessors()
                     .withRequestDefaults(
-                        Preprocessors.modifyUris().scheme("https").host("assignment.com").removePort(),
+                        Preprocessors.modifyUris().scheme("https").host("example.com").removePort(),
                         Preprocessors.prettyPrint()
                     )
                     .withResponseDefaults(
