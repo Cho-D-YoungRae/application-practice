@@ -28,6 +28,10 @@ abstract class BaseEntity {
         deleted = true
     }
 
+    fun restore() {
+        deleted = false
+    }
+
     fun isDeleted() = deleted
 
     fun isActive() = !deleted

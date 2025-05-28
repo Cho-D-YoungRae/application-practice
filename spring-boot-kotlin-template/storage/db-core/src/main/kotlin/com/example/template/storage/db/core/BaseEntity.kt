@@ -20,4 +20,19 @@ abstract class BaseEntity {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     val updatedAt: LocalDateTime? = null
+
+    @Column(name = "deleted", nullable = false)
+    var deleted: Boolean = false
+
+    fun delete() {
+        deleted = true
+    }
+
+    fun restore() {
+        deleted = false
+    }
+
+    fun isDeleted() = deleted
+
+    fun isActive() = !deleted
 }
