@@ -18,12 +18,12 @@ create table post_meta
     updated_at timestamp(6) not null default CURRENT_TIMESTAMP(6) on update CURRENT_TIMESTAMP(6),
     deleted    boolean      not null default false,
     primary key (id),
-    unique key uk_post_meta_1 (post_id)
+    unique key uk_post_meta__1 (post_id)
 ) engine = innodb;
 
-create index ix_post_meta_1 on post_meta (like_count);
+create index ix_post_meta__1 on post_meta (like_count);
 
-create table likes
+create table post_like
 (
     id         bigint       not null auto_increment,
     user_id    bigint       not null,
@@ -32,7 +32,7 @@ create table likes
     updated_at timestamp(6) not null default CURRENT_TIMESTAMP(6) on update CURRENT_TIMESTAMP(6),
     deleted    boolean      not null default false,
     primary key (id),
-    unique key uk_like_1 (post_id, user_id)
+    unique key uk_post_like__1 (post_id, user_id)
 ) engine = innodb;
 
-create index ix_likes_1 on likes (user_id);
+create index ix_post_like__1 on post_like (user_id);
