@@ -1,0 +1,9 @@
+spring:
+  application.name: db-core-test
+
+  profiles:
+    active: test
+
+  config:
+    import:
+      - db-core.yml

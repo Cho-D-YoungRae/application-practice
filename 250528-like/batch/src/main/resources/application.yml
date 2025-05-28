@@ -1,0 +1,9 @@
+spring:
+
+  profiles:
+    active: local
+    include: batch
+
+logging:
+  level:
+    com.zaxxer.hikari: debug
