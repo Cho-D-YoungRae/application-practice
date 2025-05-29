@@ -1,6 +1,6 @@
 package com.example.like.core.domain
 
-data class Like(
+data class PostLike(
     val userId: UserId,
     val postId: PostId,
 )
