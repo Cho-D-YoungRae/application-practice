@@ -2,11 +2,15 @@ package com.example.like.storage.db.core
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.Index
 import jakarta.persistence.Table
 
 @Entity
 @Table(
-    name = "posts"
+    name = "posts",
+    indexes = [
+        Index(name = "ix_posts__1", columnList = "deleted, created_at desc")
+    ]
 )
 class PostEntity(
     @Column(name = "title", length = 255, nullable = false)

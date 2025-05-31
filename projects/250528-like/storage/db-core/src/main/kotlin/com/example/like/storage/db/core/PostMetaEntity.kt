@@ -9,7 +9,7 @@ import jakarta.persistence.*
         UniqueConstraint(name = "uk_post_meta__1", columnNames = ["post_id"])
     ],
     indexes = [
-        Index(name = "ix_post_meta__1", columnList = "like_count")
+        Index(name = "ix_post_meta__1", columnList = "deleted, like_count desc, post_id desc")
     ]
 )
 class PostMetaEntity(
@@ -18,4 +18,8 @@ class PostMetaEntity(
     @Column(name = "like_count", nullable = false)
     var likeCount: Int = 0,
 ) : BaseEntity() {
+
+    @Version
+    @Column(name = "version", nullable = false)
+    private val version = 0
 }

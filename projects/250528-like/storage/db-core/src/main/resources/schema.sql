@@ -1,19 +1,22 @@
 create table posts
 (
-    id         bigint        not null auto_increment,
-    title      varchar(255)  not null,
-    content    varchar(4000) not null,
-    created_at timestamp(6)  not null default CURRENT_TIMESTAMP(6),
-    updated_at timestamp(6)  not null default CURRENT_TIMESTAMP(6) on update CURRENT_TIMESTAMP(6),
-    deleted    boolean       not null default false,
+    id         bigint       not null auto_increment,
+    title      varchar(255) not null,
+    content    text         not null,
+    created_at timestamp(6) not null default CURRENT_TIMESTAMP(6),
+    updated_at timestamp(6) not null default CURRENT_TIMESTAMP(6) on update CURRENT_TIMESTAMP(6),
+    deleted    boolean      not null default false,
     primary key (id)
 ) engine = innodb;
+
+create index ix_posts__1 on posts (deleted, created_at desc);
 
 create table post_meta
 (
     id         bigint       not null auto_increment,
     post_id    bigint       not null,
     like_count int          not null default 0,
+    version    int          not null default 0,
     created_at timestamp(6) not null default CURRENT_TIMESTAMP(6),
     updated_at timestamp(6) not null default CURRENT_TIMESTAMP(6) on update CURRENT_TIMESTAMP(6),
     deleted    boolean      not null default false,
@@ -21,13 +24,13 @@ create table post_meta
     unique key uk_post_meta__1 (post_id)
 ) engine = innodb;
 
-create index ix_post_meta__1 on post_meta (like_count);
+create index ix_post_meta__1 on post_meta (deleted, like_count desc, post_id desc);
 
 create table post_like
 (
     id         bigint       not null auto_increment,
-    user_id    bigint       not null,
     post_id    bigint       not null,
+    user_id    bigint       not null,
     created_at timestamp(6) not null default CURRENT_TIMESTAMP(6),
     updated_at timestamp(6) not null default CURRENT_TIMESTAMP(6) on update CURRENT_TIMESTAMP(6),
     deleted    boolean      not null default false,
