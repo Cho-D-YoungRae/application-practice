@@ -24,12 +24,15 @@ class PostLikeJpaRepositoryCustomImpl(
             .fetch()
     }
 
-    override fun findPostIdsOrderByLikeCount(postId: Long, size: Int, order: ListOrder): List<Long> {
+    override fun findPostIdsOrderByLikeCount(page: Int, size: Int, order: ListOrder): List<Long> {
         return queryFactory.select(postLikeEntity.postId)
             .from(postLikeEntity)
             .join(postEntity).on(postEntity.id.eq(postLikeEntity.postId))
+            .where(postEntity.deleted.isFalse)
             .groupBy(postLikeEntity.postId)
-            .orderBy(postLikeEntity.postId.count().desc())
+            .orderBy(postLikeEntity.postId.count().toOrder(order), postLikeEntity.postId.toOrder(order.opposite()))
+            .offset((page * size).toLong())
+            .limit(size.toLong())
             .fetch()
     }
 }

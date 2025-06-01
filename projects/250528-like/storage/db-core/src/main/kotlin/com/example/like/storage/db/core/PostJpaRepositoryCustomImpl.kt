@@ -11,11 +11,12 @@ class PostJpaRepositoryCustomImpl(
 
     private val queryFactory = JPAQueryFactory(entityManager)
 
-    override fun findListByOrderByCreatedAt(postId: Long, size: Int, order: ListOrder): List<PostEntity> {
+    override fun findListByOrderByCreatedAt(page: Int, size: Int, order: ListOrder): List<PostEntity> {
         return queryFactory
             .selectFrom(postEntity)
             .orderBy(postEntity.createdAt.toOrder(order))
-            .where()
+            .where(postEntity.deleted.isFalse)
+            .offset((page * size).toLong())
             .limit(size.toLong())
             .fetch()
     }

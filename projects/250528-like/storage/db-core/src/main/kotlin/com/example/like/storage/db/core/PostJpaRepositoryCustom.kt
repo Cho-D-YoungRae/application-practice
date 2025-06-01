@@ -4,5 +4,5 @@ import com.example.template.core.enums.ListOrder
 
 interface PostJpaRepositoryCustom {
 
-    fun findListByOrderByCreatedAt(postId: Long, size: Int, order: ListOrder): List<PostEntity>
+    fun findListByOrderByCreatedAt(page: Int, size: Int, order: ListOrder): List<PostEntity>
 }

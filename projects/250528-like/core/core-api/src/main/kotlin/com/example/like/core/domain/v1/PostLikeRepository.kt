@@ -1,6 +1,8 @@
 package com.example.like.core.domain.v1
 
+import com.example.like.core.domain.PostId
 import com.example.like.core.domain.PostLike
+import com.example.like.core.domain.PostLikeCount
 import com.example.like.storage.db.core.PostLikeEntity
 import com.example.like.storage.db.core.PostLikeJpaRepository
 import jakarta.transaction.Transactional
@@ -29,6 +31,11 @@ class PostLikeRepository(
             )
             true
         }
+    }
+
+    fun getCounts(postIds: List<PostId>): List<PostLikeCount> {
+        return postLikeJpaRepository.countByPostIdInAndGroupByPostId(postIds.map { it.value })
+            .map { PostLikeCount(postId = PostId(it.postId), count = it.likeCount.toInt()) }
     }
 
 }

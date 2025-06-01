@@ -15,13 +15,6 @@ services:
       - ./docker/mysql/var/lib/mysql:/var/lib/mysql # data
       - ./docker/mysql/etc/mysql/conf.d:/etc/mysql/conf.d # config
       - ./docker/mysql/init:/docker-entrypoint-initdb.d # init
-  redis:
-    image: redis:7.4.2
-    container_name: like-redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./docker/redis/data:/data
 
   controller-1:
     image: apache/kafka:latest

@@ -1,8 +1,6 @@
 package com.example.like.core.domain.v1
 
-import com.example.like.core.domain.NewPost
-import com.example.like.core.domain.PostLike
-import com.example.like.core.domain.PostListQuery
+import com.example.like.core.domain.*
 import com.example.like.core.error.CoreException
 import com.example.like.core.error.ErrorType
 import org.springframework.stereotype.Service
@@ -17,8 +15,13 @@ class PostServiceV1(
         postRepository.add(newPost)
     }
 
-    fun getList(query: PostListQuery) {
-        postRepository
+    fun getList(query: PostListQuery): List<Post> {
+        return postRepository.find(query)
+    }
+
+    fun getLikeCounts(posts: List<Post>): Map<PostId, Int> {
+        return postLikeRepository.getCounts(posts.map { it.id })
+            .associate { it.postId to it.count }
     }
 
     fun like(postLike: PostLike) {
