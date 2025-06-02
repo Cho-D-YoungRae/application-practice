@@ -30,7 +30,7 @@ class PostLikeJpaRepositoryCustomImpl(
             .join(postEntity).on(postEntity.id.eq(postLikeEntity.postId))
             .where(postEntity.deleted.isFalse)
             .groupBy(postLikeEntity.postId)
-            .orderBy(postLikeEntity.postId.count().toOrder(order), postLikeEntity.postId.toOrder(order.opposite()))
+            .orderBy(postLikeEntity.postId.count().toOrder(order))
             .offset((page * size).toLong())
             .limit(size.toLong())
             .fetch()

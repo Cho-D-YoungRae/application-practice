@@ -9,7 +9,7 @@ import jakarta.persistence.*
         UniqueConstraint(name = "uk_post_meta__1", columnNames = ["post_id"])
     ],
     indexes = [
-        Index(name = "ix_post_meta__1", columnList = "deleted, like_count desc, post_id desc")
+        Index(name = "ix_post_meta__1", columnList = "deleted, like_count, post_id")
     ]
 )
 class PostMetaEntity(

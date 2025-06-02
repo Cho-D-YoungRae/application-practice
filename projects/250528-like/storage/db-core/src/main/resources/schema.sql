@@ -24,7 +24,7 @@ create table post_meta
     unique key uk_post_meta__1 (post_id)
 ) engine = innodb;
 
-create index ix_post_meta__1 on post_meta (deleted, like_count desc, post_id desc);
+create index ix_post_meta__1 on post_meta (deleted, like_count, post_id);
 
 create table post_like
 (
