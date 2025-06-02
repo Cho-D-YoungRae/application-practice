@@ -1,6 +1,7 @@
 package com.example.like.storage.db.core
 
 import jakarta.persistence.*
+import kotlin.math.max
 
 @Entity
 @Table(
@@ -25,5 +26,9 @@ class PostMetaEntity(
 
     fun likeUp() {
         likeCount += 1
+    }
+
+    fun likeDown() {
+        likeCount = max(likeCount - 1, 0)
     }
 }

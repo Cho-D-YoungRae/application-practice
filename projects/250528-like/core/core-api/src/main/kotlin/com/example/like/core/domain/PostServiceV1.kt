@@ -8,22 +8,22 @@ import org.springframework.stereotype.Service
 class PostServiceV1(
     private val postRepository: PostRepository,
     private val postLikeRepository: PostLikeRepository
-) {
+) : PostService {
 
-    fun create(newPost: NewPost) {
+    override fun create(newPost: NewPost) {
         postRepository.addWithoutMeta(newPost)
     }
 
-    fun getList(query: PostListQuery): List<Post> {
+    override fun getList(query: PostListQuery): List<Post> {
         return postRepository.findWithoutMeta(query)
     }
 
-    fun getLikeCounts(posts: List<Post>): Map<PostId, Int> {
+    override fun getLikeCounts(posts: List<Post>): Map<PostId, Int> {
         return postLikeRepository.getCountsWithoutMeta(posts.map { it.id })
             .associate { it.postId to it.count }
     }
 
-    fun like(postLike: PostLike) {
+    override fun like(postLike: PostLike) {
         if (!postRepository.exists(postLike.postId)) {
             throw CoreException(ErrorType.POST_NOT_FOUND, "postId=" + postLike.postId)
         }

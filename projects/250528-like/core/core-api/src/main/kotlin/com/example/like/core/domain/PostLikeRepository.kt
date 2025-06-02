@@ -21,12 +21,17 @@ class PostLikeRepository(
 
     fun likeWithMeta(postLike: PostLike): Boolean {
         return optimisticLockTemplate.execute<Boolean> {
-            val likeResult = like(postLike)
-            if (likeResult) {
-                postMetaJpaRepository.findByPostId(postLike.postId.value)!!.likeUp()
-            }
-            likeResult
+            like(postLike).also { if (it) doCountUp(postLike) }
         }
+    }
+
+    @Transactional
+    fun countUp(postLike: PostLike) {
+        doCountUp(postLike)
+    }
+
+    private fun doCountUp(postLike: PostLike) {
+        postMetaJpaRepository.findByPostId(postLike.postId.value)!!.likeUp()
     }
 
     private fun like(postLike: PostLike): Boolean = postLikeJpaRepository.findByPostIdAndUserId(

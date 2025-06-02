@@ -5,9 +5,10 @@ import com.example.like.core.error.ErrorType
 import org.springframework.stereotype.Service
 
 @Service
-class PostServiceV2(
+class PostServiceV3(
     private val postRepository: PostRepository,
-    private val postLikeRepository: PostLikeRepository
+    private val postLikeRepository: PostLikeRepository,
+    private val postLikePostProcessor: PostLikePostProcessor
 ) : PostService {
 
     override fun create(newPost: NewPost) {
@@ -27,6 +28,7 @@ class PostServiceV2(
         if (!postRepository.exists(postLike.postId)) {
             throw CoreException(ErrorType.POST_NOT_FOUND, "postId=" + postLike.postId)
         }
-        postLikeRepository.likeWithMeta(postLike)
+        postLikeRepository.likeWithoutMeta(postLike)
+        postLikePostProcessor.countUp(postLike)
     }
 }
