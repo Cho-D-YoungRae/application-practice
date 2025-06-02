@@ -22,4 +22,8 @@ class PostMetaEntity(
     @Version
     @Column(name = "version", nullable = false)
     private val version = 0
+
+    fun likeUp() {
+        likeCount += 1
+    }
 }

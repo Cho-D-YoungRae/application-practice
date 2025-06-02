@@ -7,8 +7,8 @@ import com.example.like.core.api.controller.response.PostResponse
 import com.example.like.core.api.controller.response.toResponse
 import com.example.like.core.domain.PostId
 import com.example.like.core.domain.PostLike
+import com.example.like.core.domain.PostServiceV2
 import com.example.like.core.domain.UserId
-import com.example.like.core.domain.v2.PostServiceV2
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 

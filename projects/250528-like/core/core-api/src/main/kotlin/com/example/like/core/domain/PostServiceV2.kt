@@ -1,26 +1,25 @@
-package com.example.like.core.domain.v1
+package com.example.like.core.domain
 
-import com.example.like.core.domain.*
 import com.example.like.core.error.CoreException
 import com.example.like.core.error.ErrorType
 import org.springframework.stereotype.Service
 
 @Service
-class PostServiceV1(
+class PostServiceV2(
     private val postRepository: PostRepository,
     private val postLikeRepository: PostLikeRepository
 ) {
 
     fun create(newPost: NewPost) {
-        postRepository.add(newPost)
+        postRepository.addWithMeta(newPost)
     }
 
     fun getList(query: PostListQuery): List<Post> {
-        return postRepository.find(query)
+        return postRepository.findWithMeta(query)
     }
 
     fun getLikeCounts(posts: List<Post>): Map<PostId, Int> {
-        return postLikeRepository.getCounts(posts.map { it.id })
+        return postLikeRepository.getCountsWithMeta(posts.map { it.id })
             .associate { it.postId to it.count }
     }
 
@@ -28,6 +27,6 @@ class PostServiceV1(
         if (!postRepository.exists(postLike.postId)) {
             throw CoreException(ErrorType.POST_NOT_FOUND, "postId=" + postLike.postId)
         }
-        postLikeRepository.like(postLike)
+        postLikeRepository.likeWithMeta(postLike)
     }
 }

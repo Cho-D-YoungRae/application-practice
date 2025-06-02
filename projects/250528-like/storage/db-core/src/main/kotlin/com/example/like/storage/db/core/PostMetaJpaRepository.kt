@@ -8,4 +8,5 @@ interface PostMetaJpaRepository : JpaRepository<PostMetaEntity, Long>, PostMetaJ
 
     fun findAllByPostIdIn(postIds: Collection<Long>): List<PostMetaEntity>
 
+    fun findByPostId(postId: Long): PostMetaEntity?
 }
