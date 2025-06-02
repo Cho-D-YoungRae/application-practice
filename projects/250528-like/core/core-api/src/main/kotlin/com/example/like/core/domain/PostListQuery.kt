@@ -1,7 +1,7 @@
 package com.example.like.core.domain
 
-import com.example.template.core.enums.ListOrder
-import com.example.template.core.enums.PostSortType
+import com.example.like.core.enums.ListOrder
+import com.example.like.core.enums.PostSortType
 
 
 data class PostListQuery(

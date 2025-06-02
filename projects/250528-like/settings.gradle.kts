@@ -3,6 +3,7 @@ rootProject.name = "like"
 include(
     "core:core-enum",
     "core:core-api",
+    "core:core-event",
     "batch",
     "worker",
     "storage:db-core",

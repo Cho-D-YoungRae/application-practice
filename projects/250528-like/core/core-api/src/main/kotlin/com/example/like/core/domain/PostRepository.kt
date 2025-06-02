@@ -1,7 +1,7 @@
 package com.example.like.core.domain
 
 import com.example.like.storage.db.core.*
-import com.example.template.core.enums.PostSortType
+import com.example.like.core.enums.PostSortType
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 

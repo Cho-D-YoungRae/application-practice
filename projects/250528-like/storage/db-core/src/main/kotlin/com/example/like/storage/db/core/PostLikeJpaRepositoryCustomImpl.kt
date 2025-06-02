@@ -2,7 +2,7 @@ package com.example.like.storage.db.core
 
 import com.example.like.storage.db.core.QPostEntity.postEntity
 import com.example.like.storage.db.core.QPostLikeEntity.postLikeEntity
-import com.example.template.core.enums.ListOrder
+import com.example.like.core.enums.ListOrder
 import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager
 

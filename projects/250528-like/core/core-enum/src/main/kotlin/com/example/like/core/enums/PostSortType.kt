@@ -1,4 +1,4 @@
-package com.example.template.core.enums
+package com.example.like.core.enums
 
 enum class PostSortType {
 

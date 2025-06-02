@@ -1,6 +1,6 @@
 package com.example.like.storage.db.core
 
-import com.example.template.core.enums.ListOrder
+import com.example.like.core.enums.ListOrder
 import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.core.types.dsl.ComparableExpressionBase
 

@@ -1,8 +1,8 @@
 package com.example.like.core.api.controller.request
 
 import com.example.like.core.domain.PostListQuery
-import com.example.template.core.enums.ListOrder
-import com.example.template.core.enums.PostSortType
+import com.example.like.core.enums.ListOrder
+import com.example.like.core.enums.PostSortType
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Positive
 
