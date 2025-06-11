@@ -28,7 +28,8 @@ class PostServiceV3(
         if (!postRepository.exists(postLike.postId)) {
             throw CoreException(ErrorType.POST_NOT_FOUND, "postId=" + postLike.postId)
         }
-        postLikeRepository.likeWithoutMeta(postLike)
-        postLikePostProcessor.countUp(postLike)
+        if (postLikeRepository.likeWithoutMeta(postLike)) {
+            postLikePostProcessor.countUp(postLike)
+        }
     }
 }

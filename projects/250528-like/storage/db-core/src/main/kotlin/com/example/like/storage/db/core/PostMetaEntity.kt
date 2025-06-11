@@ -31,4 +31,8 @@ class PostMetaEntity(
     fun likeDown() {
         likeCount = max(likeCount - 1, 0)
     }
+
+    fun update(likeCount: Int) {
+        this.likeCount = max(likeCount, 0)
+    }
 }
