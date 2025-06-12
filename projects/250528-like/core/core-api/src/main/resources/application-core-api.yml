@@ -4,6 +4,7 @@ spring:
     - monitoring.yml
     - logging.yml
     - db-core.yml
+    - core-event.yml
 
   task:
     execution:

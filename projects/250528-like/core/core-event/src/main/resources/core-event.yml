@@ -1,0 +1,25 @@
+spring:
+  kafka:
+    bootstrap-servers: {KAFKA_BOOTSTRAP_SERVERS}
+    producer:
+      acks: -1
+      retries: 3
+      value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        min.insync.replicas: 2
+    consumer:
+      key-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    listener:
+      type: batch
+      ack-mode: batch
+
+app:
+  event:
+    post-like:
+      topic-name: ${POST_LIKE_TOPIC_NAME}
+
+---
+spring:
+  config.activate.on-profile: local
+  kafka:
+    bootstrap-servers: localhost:29092,localhost:39092,localhost:49092

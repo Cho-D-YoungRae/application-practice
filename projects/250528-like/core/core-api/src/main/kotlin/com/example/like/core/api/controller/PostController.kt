@@ -11,8 +11,18 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class PostController(
-    private val postServices: List<PostService>
+    postServiceV1: PostServiceV1,
+    postServiceV2: PostServiceV2,
+    postServiceV3: PostServiceV3,
+    postServiceV4: PostServiceV4
 ) {
+
+    private val versionToService = mapOf(
+        "v1" to postServiceV1,
+        "v2" to postServiceV2,
+        "v3" to postServiceV3,
+        "v4" to postServiceV4
+    )
 
     @PostMapping("/{version}/posts")
     fun create(
@@ -49,10 +59,6 @@ class PostController(
         service(version).like(PostLike(UserId(userId), PostId(postId)))
     }
 
-    private fun service(version: String): PostService = when(version) {
-        "v1" -> postServices.find { it is PostServiceV1 }!!
-        "v2" -> postServices.find { it is PostServiceV2 }!!
-        "v3" -> postServices.find { it is PostServiceV3 }!!
-        else -> throw IllegalArgumentException("지원하지 않는 버전입니다: $version")
-    }
+    private fun service(version: String): PostService = versionToService[version]
+        ?: throw IllegalArgumentException("지원하지 않는 버전입니다: $version")
 }

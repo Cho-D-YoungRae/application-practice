@@ -31,7 +31,7 @@ class PostLikeRepository(
     }
 
     private fun doCountUp(postLike: PostLike) {
-        postMetaJpaRepository.findByPostId(postLike.postId.value)!!.likeUp()
+        postMetaJpaRepository.findWithOptimisticLockByPostId(postLike.postId.value)!!.likeUp()
     }
 
     private fun like(postLike: PostLike): Boolean = postLikeJpaRepository.findByPostIdAndUserId(
