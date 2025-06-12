@@ -10,8 +10,6 @@ interface PostMetaJpaRepository : JpaRepository<PostMetaEntity, Long>, PostMetaJ
 
     fun findAllByPostIdIn(postIds: Collection<Long>): List<PostMetaEntity>
 
-    fun findByPostId(postId: Long): PostMetaEntity?
-
     @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
     fun findWithOptimisticLockByPostId(postId: Long): PostMetaEntity?
 

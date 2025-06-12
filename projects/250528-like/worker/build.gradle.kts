@@ -7,11 +7,10 @@ tasks.getByName("jar") {
 }
 
 dependencies {
+    implementation(project(":core:core-event"))
     implementation(project(":storage:db-core"))
     implementation(project(":support:logging"))
     implementation(project(":support:monitoring"))
-
-    implementation("org.springframework.kafka:spring-kafka")
 
     testImplementation("org.springframework.kafka:spring-kafka-test")
 }
