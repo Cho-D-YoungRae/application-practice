@@ -47,7 +47,6 @@ storage:
 spring:
   config.activate.on-profile: local
 
-
 storage:
   datasource:
     core:

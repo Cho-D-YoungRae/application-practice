@@ -1,3 +1,7 @@
+drop table if exists posts;
+drop table if exists post_meta;
+drop table if exists post_like;
+
 create table posts
 (
     id         bigint       not null auto_increment,
@@ -8,7 +12,7 @@ create table posts
     primary key (id)
 ) engine = innodb;
 
-create index ix_posts__1 on posts (deleted, created_at desc);
+create index ix_posts__1 on posts (created_at desc);
 
 create table post_meta
 (
@@ -22,7 +26,7 @@ create table post_meta
     unique key uk_post_meta__1 (post_id)
 ) engine = innodb;
 
-create index ix_post_meta__1 on post_meta (deleted, like_count, post_id);
+create index ix_post_meta__1 on post_meta (like_count, post_id);
 
 create table post_like
 (

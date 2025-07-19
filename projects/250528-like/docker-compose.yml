@@ -12,9 +12,7 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
     volumes:
-      - ./docker/mysql/var/lib/mysql:/var/lib/mysql # data
-      - ./docker/mysql/etc/mysql/conf.d:/etc/mysql/conf.d # config
-      - ./docker/mysql/init:/docker-entrypoint-initdb.d # init
+      - ./storage/db-core/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/init.sql
 
   controller-1:
     image: apache/kafka:3.9.1

@@ -15,7 +15,7 @@ import kotlin.math.max
         UniqueConstraint(name = "uk_post_meta__1", columnNames = ["post_id"]),
     ],
     indexes = [
-        Index(name = "ix_post_meta__1", columnList = "deleted, like_count, post_id"),
+        Index(name = "ix_post_meta__1", columnList = "like_count, post_id"),
     ],
 )
 class PostMetaEntity(

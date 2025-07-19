@@ -9,7 +9,7 @@ import jakarta.persistence.Table
 @Table(
     name = "posts",
     indexes = [
-        Index(name = "ix_posts__1", columnList = "deleted, created_at desc"),
+        Index(name = "ix_posts__1", columnList = "created_at desc"),
     ],
 )
 class PostEntity(
