@@ -7,9 +7,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class PostLikeEventConsumer(
-    private val postMetaRepository: PostMetaRepository
+    private val postMetaRepository: PostMetaRepository,
 ) {
-
     private val log = LoggerFactory.getLogger(javaClass)
 
     @KafkaListener(topics = ["\${app.event.post-like.topic-name}"])

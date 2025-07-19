@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotBlank
 
 data class PostCreateRequest(
     @NotBlank val title: String,
-    @NotBlank val content: String
+    @NotBlank val content: String,
 ) {
-
-    fun toNewPost() = NewPost(
-        title = title,
-        content = content
-    )
+    fun toNewPost() =
+        NewPost(
+            title = title,
+            content = content,
+        )
 }

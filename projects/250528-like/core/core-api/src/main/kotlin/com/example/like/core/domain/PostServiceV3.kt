@@ -8,9 +8,8 @@ import org.springframework.stereotype.Service
 class PostServiceV3(
     private val postRepository: PostRepository,
     private val postLikeRepository: PostLikeRepository,
-    private val postLikePostProcessor: PostLikePostProcessor
+    private val postLikePostProcessor: PostLikePostProcessor,
 ) : PostService {
-
     override fun create(newPost: NewPost) {
         postRepository.addWithMeta(newPost)
     }
@@ -28,7 +27,7 @@ class PostServiceV3(
         if (!postRepository.exists(postLike.postId)) {
             throw CoreException(ErrorType.POST_NOT_FOUND, "postId=" + postLike.postId)
         }
-        if (postLikeRepository.likeWithoutMeta(postLike)) {
+        if (postLikeRepository.like(postLike)) {
             postLikePostProcessor.countUp(postLike)
         }
     }

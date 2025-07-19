@@ -5,9 +5,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class PostLikePostProcessor(
-    private val postLikeRepository: PostLikeRepository
+    private val postLikeRepository: PostLikeRepository,
 ) {
-
     @Async
     fun countUp(postLike: PostLike) {
         postLikeRepository.countUp(postLike)

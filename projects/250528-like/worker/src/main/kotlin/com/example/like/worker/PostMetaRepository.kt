@@ -6,9 +6,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Repository
 class PostMetaRepository(
-    private val postMetaJpaRepository: PostMetaJpaRepository
+    private val postMetaJpaRepository: PostMetaJpaRepository,
 ) {
-
     @Transactional
     fun likeCountUp(postIds: List<Long>) {
         val postIdToCount = postIds.groupingBy { it }.eachCount()

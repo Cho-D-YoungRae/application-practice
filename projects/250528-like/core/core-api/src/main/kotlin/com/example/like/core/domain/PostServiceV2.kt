@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service
 @Service
 class PostServiceV2(
     private val postRepository: PostRepository,
-    private val postLikeRepository: PostLikeRepository
+    private val postLikeRepository: PostLikeRepository,
 ) : PostService {
-
     override fun create(newPost: NewPost) {
         postRepository.addWithMeta(newPost)
     }

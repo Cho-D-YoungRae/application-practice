@@ -14,36 +14,32 @@ private const val MAX_ATTEMPTS = 5
 
 @Component
 class OptimisticLockTemplate(
-    private val txTemplate: TransactionTemplate
+    private val txTemplate: TransactionTemplate,
 ) {
-
     private val log = LoggerFactory.getLogger(javaClass)
-    private val retryTemplate = RetryTemplateBuilder()
-        .retryOn(OptimisticLockingFailureException::class.java)
-        .maxAttempts(MAX_ATTEMPTS)
-        .uniformRandomBackoff(Duration.ofMillis(100), Duration.ofMillis(300))
-        .withListener(object : RetryListener {
-            override fun <T : Any, E : Throwable> onError(
-                context: RetryContext,
-                callback: RetryCallback<T, E>,
-                throwable: Throwable
-            ) {
-                log.info(
-                    "Optimistic lock failure detected. Retry count: [${context.retryCount}/$MAX_ATTEMPTS]",
-                    throwable
-                )
-            }
-        })
-        .build()
+    private val retryTemplate =
+        RetryTemplateBuilder()
+            .retryOn(OptimisticLockingFailureException::class.java)
+            .maxAttempts(MAX_ATTEMPTS)
+            .uniformRandomBackoff(Duration.ofMillis(100), Duration.ofMillis(300))
+            .withListener(
+                object : RetryListener {
+                    override fun <T : Any, E : Throwable> onError(
+                        context: RetryContext,
+                        callback: RetryCallback<T, E>,
+                        throwable: Throwable,
+                    ) {
+                        log.info(
+                            "Optimistic lock failure detected. Retry count: [${context.retryCount}/$MAX_ATTEMPTS]",
+                            throwable,
+                        )
+                    }
+                },
+            )
+            .build()
 
     fun <T> execute(action: () -> T): T {
         return retryTemplate.execute<T, OptimisticLockingFailureException> {
-            txTemplate.execute { action.invoke() }!!
-        }
-    }
-
-    fun execute(action: () -> Unit) {
-        return retryTemplate.execute<Unit, OptimisticLockingFailureException> {
             txTemplate.execute { action.invoke() }!!
         }
     }

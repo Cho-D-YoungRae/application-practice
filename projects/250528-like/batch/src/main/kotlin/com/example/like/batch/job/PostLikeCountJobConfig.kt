@@ -32,7 +32,6 @@ class PostLikeCountJobConfig(
     private val jobRepository: JobRepository,
     private val txManager: PlatformTransactionManager,
 ) {
-
     @Bean(JOB_NAME)
     fun job(): Job {
         return JobBuilder(JOB_NAME, jobRepository)
@@ -57,7 +56,7 @@ class PostLikeCountJobConfig(
             .entityManagerFactory(entityManagerFactory!!)
             .pageSize(CHUNK_SIZE)
             .transacted(false)
-            .queryString("SELECT p FROM PostEntity p WHERE p.deleted = false")
+            .queryString("SELECT p FROM PostEntity p")
             .build()
     }
 
@@ -66,35 +65,43 @@ class PostLikeCountJobConfig(
     fun writer(
         postLikeJpaRepository: PostLikeJpaRepository? = null,
         postMetaJpaRepository: PostMetaJpaRepository? = null,
-        entityManagerFactory: EntityManagerFactory? = null
+        entityManagerFactory: EntityManagerFactory? = null,
     ): ItemWriter<PostMetaEntity> {
-        return PostLikeCountItemWriter(
-            postLikeJpaRepository!!,
-            postMetaJpaRepository!!,
+        val jpaItemWriter =
             JpaItemWriterBuilder<PostMetaEntity>()
                 .entityManagerFactory(entityManagerFactory!!)
                 .usePersist(false)
                 .build()
+
+        return PostLikeCountItemWriter(
+            postLikeJpaRepository!!,
+            postMetaJpaRepository!!,
+            jpaItemWriter,
         )
     }
 
     class PostLikeCountItemWriter(
         private val postLikeJpaRepository: PostLikeJpaRepository,
         private val postMetaJpaRepository: PostMetaJpaRepository,
-        private val jpaItemWriter: JpaItemWriter<PostMetaEntity>
+        private val jpaItemWriter: JpaItemWriter<PostMetaEntity>,
     ) : ItemWriter<PostMetaEntity>, InitializingBean by jpaItemWriter {
-
         override fun write(chunk: Chunk<out PostMetaEntity>) {
             val postIds = chunk.items.map { it.postId }
-            val postIdToLikeCount = postLikeJpaRepository.countByPostIdInAndGroupByPostId(postIds)
-                .associateBy { it.postId }
+
+            val postIdToLikeCount =
+                postLikeJpaRepository
+                    .countByPostIdInAndGroupByPostId(postIds)
+                    .associateBy {
+                        it.postId
+                    }
+
             val postMetaEntities = postMetaJpaRepository.findAllWithPessimisticLockByPostIdIn(postIds)
+
             postMetaEntities.forEach {
                 it.update(postIdToLikeCount[it.postId]?.likeCount?.toInt() ?: 0)
             }
 
             jpaItemWriter.write(Chunk(postMetaEntities))
         }
-
     }
 }

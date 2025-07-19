@@ -11,17 +11,16 @@ import org.springframework.stereotype.Component
 class PostLikeRepository(
     private val postLikeJpaRepository: PostLikeJpaRepository,
     private val postMetaJpaRepository: PostMetaJpaRepository,
-    private val optimisticLockTemplate: OptimisticLockTemplate
+    private val optimisticLockTemplate: OptimisticLockTemplate,
 ) {
-
     @Transactional
-    fun likeWithoutMeta(postLike: PostLike): Boolean {
-        return like(postLike)
+    fun like(postLike: PostLike): Boolean {
+        return doLike(postLike)
     }
 
     fun likeWithMeta(postLike: PostLike): Boolean {
-        return optimisticLockTemplate.execute<Boolean> {
-            like(postLike).also { if (it) doCountUp(postLike) }
+        return optimisticLockTemplate.execute {
+            doLike(postLike).also { if (it) doCountUp(postLike) }
         }
     }
 
@@ -34,24 +33,23 @@ class PostLikeRepository(
         postMetaJpaRepository.findWithOptimisticLockByPostId(postLike.postId.value)!!.likeUp()
     }
 
-    private fun like(postLike: PostLike): Boolean = postLikeJpaRepository.findByPostIdAndUserId(
-        postLike.postId.value,
-        postLike.userId.value
-    )?.let { entity ->
-        if (entity.isDeleted()) {
-            entity.restore()
-            true
-        } else {
+    private fun doLike(postLike: PostLike): Boolean =
+        postLikeJpaRepository.findByPostIdAndUserId(
+            postLike.postId.value,
+            postLike.userId.value,
+        )?.let { _ ->
             false
+        } ?: run {
+            postLikeJpaRepository.save(
+                PostLikeEntity(
+                    postLike.postId.value,
+                    postLike.userId.value,
+                ),
+            )
+            true
         }
-    } ?: run {
-        postLikeJpaRepository.save(
-            PostLikeEntity(postLike.postId.value, postLike.userId.value)
-        )
-        true
-    }
 
-    fun getCountsWithoutMeta(postIds: List<PostId>): List<PostLikeCount> {
+    fun getCounts(postIds: List<PostId>): List<PostLikeCount> {
         return postLikeJpaRepository.countByPostIdInAndGroupByPostId(postIds.map { it.value })
             .map { PostLikeCount(postId = PostId(it.postId), count = it.likeCount.toInt()) }
     }
@@ -60,5 +58,4 @@ class PostLikeRepository(
         return postMetaJpaRepository.findAllByPostIdIn(postIds.map { it.value })
             .map { PostLikeCount(postId = PostId(it.postId), count = it.likeCount) }
     }
-
 }

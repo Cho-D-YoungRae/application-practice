@@ -1,11 +1,13 @@
 package com.example.like.core.error
 
 class CoreException : RuntimeException {
-
     val errorType: ErrorType
 
     companion object {
-        private fun errorMessage(errorType: ErrorType, message: String? = null): String {
+        private fun errorMessage(
+            errorType: ErrorType,
+            message: String? = null,
+        ): String {
             return "[$errorType]:${errorType.message}${message?.let { " >>> $it" } ?: ""}"
         }
     }
@@ -22,9 +24,11 @@ class CoreException : RuntimeException {
 
     constructor(message: String, cause: Throwable) : this(ErrorType.DEFAULT_ERROR, message, cause)
 
-    constructor(errorType: ErrorType, message: String, cause: Throwable)
-            : super(errorMessage(errorType, message), cause) {
+    constructor(
+        errorType: ErrorType,
+        message: String,
+        cause: Throwable,
+    ) : super(errorMessage(errorType, message), cause) {
         this.errorType = errorType
     }
-
 }

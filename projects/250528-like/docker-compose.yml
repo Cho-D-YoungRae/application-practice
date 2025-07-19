@@ -17,7 +17,7 @@ services:
       - ./docker/mysql/init:/docker-entrypoint-initdb.d # init
 
   controller-1:
-    image: apache/kafka:latest
+    image: apache/kafka:3.9.1
     container_name: like-controller-1
     environment:
       KAFKA_NODE_ID: 1
@@ -29,7 +29,7 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
 
   controller-2:
-    image: apache/kafka:latest
+    image: apache/kafka:3.9.1
     container_name: like-controller-2
     environment:
       KAFKA_NODE_ID: 2
@@ -41,7 +41,7 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
 
   controller-3:
-    image: apache/kafka:latest
+    image: apache/kafka:3.9.1
     container_name: like-controller-3
     environment:
       KAFKA_NODE_ID: 3
@@ -53,7 +53,7 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
 
   broker-1:
-    image: apache/kafka:latest
+    image: apache/kafka:3.9.1
     container_name: like-broker-1
     ports:
       - "29092:9092"
@@ -73,7 +73,7 @@ services:
       - controller-3
 
   broker-2:
-    image: apache/kafka:latest
+    image: apache/kafka:3.9.1
     container_name: like-broker-2
     ports:
       - "39092:9092"
@@ -93,7 +93,7 @@ services:
       - controller-3
 
   broker-3:
-    image: apache/kafka:latest
+    image: apache/kafka:3.9.1
     container_name: like-broker-3
     ports:
       - "49092:9092"

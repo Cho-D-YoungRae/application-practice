@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PostLikeJpaRepository : JpaRepository<PostLikeEntity, Long>, PostLikeJpaRepositoryCustom {
-
-    fun findByPostIdAndUserId(postId: Long, userId: Long): PostLikeEntity?
+    fun findByPostIdAndUserId(
+        postId: Long,
+        userId: Long,
+    ): PostLikeEntity?
 }

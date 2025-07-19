@@ -7,7 +7,6 @@ import java.time.ZoneId
 
 @Configuration
 class ClockConfig {
-    
     @Bean
     fun clock(): Clock = Clock.system(ZoneId.of("Asia/Seoul"))
 }

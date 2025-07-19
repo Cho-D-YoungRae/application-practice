@@ -7,19 +7,18 @@ import org.springframework.stereotype.Service
 @Service
 class PostServiceV1(
     private val postRepository: PostRepository,
-    private val postLikeRepository: PostLikeRepository
+    private val postLikeRepository: PostLikeRepository,
 ) : PostService {
-
     override fun create(newPost: NewPost) {
-        postRepository.addWithoutMeta(newPost)
+        postRepository.add(newPost)
     }
 
     override fun getList(query: PostListQuery): List<Post> {
-        return postRepository.findWithoutMeta(query)
+        return postRepository.find(query)
     }
 
     override fun getLikeCounts(posts: List<Post>): Map<PostId, Int> {
-        return postLikeRepository.getCountsWithoutMeta(posts.map { it.id })
+        return postLikeRepository.getCounts(posts.map { it.id })
             .associate { it.postId to it.count }
     }
 
@@ -27,6 +26,6 @@ class PostServiceV1(
         if (!postRepository.exists(postLike.postId)) {
             throw CoreException(ErrorType.POST_NOT_FOUND, "postId=" + postLike.postId)
         }
-        postLikeRepository.likeWithoutMeta(postLike)
+        postLikeRepository.like(postLike)
     }
 }

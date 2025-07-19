@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
 @RestControllerAdvice
-class ApiExceptionHandler: ResponseEntityExceptionHandler() {
-
+class ApiExceptionHandler : ResponseEntityExceptionHandler() {
     @ExceptionHandler(CoreException::class)
     private fun handleCoreException(ex: CoreException): ResponseEntity<ErrorResponse?> {
         when (ex.errorType.logLevel) {
@@ -46,6 +45,5 @@ class ApiExceptionHandler: ResponseEntityExceptionHandler() {
             .body<ErrorResponse>(ErrorResponse(ErrorType.DEFAULT_ERROR))
     }
 
-    private fun exceptionLogMessage(exception: Exception) =
-        "[${exception.javaClass.simpleName}]: ${exception.message}"
+    private fun exceptionLogMessage(exception: Exception) = "[${exception.javaClass.simpleName}]: ${exception.message}"
 }

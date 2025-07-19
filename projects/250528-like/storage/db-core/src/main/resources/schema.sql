@@ -5,7 +5,6 @@ create table posts
     content    text         not null,
     created_at timestamp(6) not null default CURRENT_TIMESTAMP(6),
     updated_at timestamp(6) not null default CURRENT_TIMESTAMP(6) on update CURRENT_TIMESTAMP(6),
-    deleted    boolean      not null default false,
     primary key (id)
 ) engine = innodb;
 
@@ -19,7 +18,6 @@ create table post_meta
     version    int          not null default 0,
     created_at timestamp(6) not null default CURRENT_TIMESTAMP(6),
     updated_at timestamp(6) not null default CURRENT_TIMESTAMP(6) on update CURRENT_TIMESTAMP(6),
-    deleted    boolean      not null default false,
     primary key (id),
     unique key uk_post_meta__1 (post_id)
 ) engine = innodb;
@@ -33,7 +31,6 @@ create table post_like
     user_id    bigint       not null,
     created_at timestamp(6) not null default CURRENT_TIMESTAMP(6),
     updated_at timestamp(6) not null default CURRENT_TIMESTAMP(6) on update CURRENT_TIMESTAMP(6),
-    deleted    boolean      not null default false,
     primary key (id),
     unique key uk_post_like__1 (post_id, user_id)
 ) engine = innodb;

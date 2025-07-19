@@ -2,6 +2,7 @@ spring:
   config:
     import:
       - db-core.yml
+      - core-event.yml
       - logging.yml
       - monitoring.yml
 

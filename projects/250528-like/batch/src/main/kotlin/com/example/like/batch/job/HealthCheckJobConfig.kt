@@ -21,7 +21,6 @@ class HealthCheckJobConfig(
     private val jobRepository: JobRepository,
     private val txManager: PlatformTransactionManager,
 ) {
-
     private val log = LoggerFactory.getLogger(javaClass)
 
     companion object {
@@ -30,7 +29,7 @@ class HealthCheckJobConfig(
     }
 
     @Bean(JOB_NAME)
-    fun job(step: Step): Job {
+    fun job(): Job {
         return JobBuilder(JOB_NAME, jobRepository)
             .incrementer(RunIdIncrementer())
             .start(step())
@@ -40,7 +39,7 @@ class HealthCheckJobConfig(
     @Bean(STEP_NAME)
     fun step(): Step {
         return StepBuilder(STEP_NAME, jobRepository)
-            .tasklet({ contribution, chunkContext ->
+            .tasklet({ _, _ ->
                 log.info("<<<<<<<<<<<< 헬스체크 >>>>>>>>>>>>")
                 log.info("timezone: {}", clock.zone)
                 log.info("date: {}", LocalDate.now(clock))

@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Primary
 
 @Configuration
 class CoreDataSourceConfig {
-
     @Primary
     @Bean
     @ConfigurationProperties(prefix = "storage.datasource.core")

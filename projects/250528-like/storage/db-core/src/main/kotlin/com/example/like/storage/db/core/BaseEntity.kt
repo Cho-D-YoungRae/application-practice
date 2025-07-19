@@ -1,13 +1,16 @@
 package com.example.like.storage.db.core
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.MappedSuperclass
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @MappedSuperclass
 abstract class BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -20,19 +23,4 @@ abstract class BaseEntity {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     val updatedAt: LocalDateTime? = null
-
-    @Column(name = "deleted", nullable = false)
-    var deleted: Boolean = false
-
-    fun delete() {
-        deleted = true
-    }
-
-    fun restore() {
-        deleted = false
-    }
-
-    fun isDeleted() = deleted
-
-    fun isActive() = !deleted
 }

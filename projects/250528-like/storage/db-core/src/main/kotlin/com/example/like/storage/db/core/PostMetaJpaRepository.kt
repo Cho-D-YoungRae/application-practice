@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PostMetaJpaRepository : JpaRepository<PostMetaEntity, Long>, PostMetaJpaRepositoryCustom {
-
     fun findAllByPostIdIn(postIds: Collection<Long>): List<PostMetaEntity>
 
     @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)

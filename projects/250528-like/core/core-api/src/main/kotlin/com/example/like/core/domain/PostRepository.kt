@@ -1,7 +1,11 @@
 package com.example.like.core.domain
 
-import com.example.like.storage.db.core.*
 import com.example.like.core.enums.PostSortType
+import com.example.like.storage.db.core.PostEntity
+import com.example.like.storage.db.core.PostJpaRepository
+import com.example.like.storage.db.core.PostLikeJpaRepository
+import com.example.like.storage.db.core.PostMetaEntity
+import com.example.like.storage.db.core.PostMetaJpaRepository
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 
@@ -9,65 +13,76 @@ import org.springframework.transaction.annotation.Transactional
 class PostRepository(
     private val postJpaRepository: PostJpaRepository,
     private val postLikeJpaRepository: PostLikeJpaRepository,
-    private val postMetaJpaRepository: PostMetaJpaRepository
+    private val postMetaJpaRepository: PostMetaJpaRepository,
 ) {
-
-    fun addWithoutMeta(newPost: NewPost): PostId {
-        return PostId(
-            postJpaRepository.save(
-                PostEntity(newPost.title, newPost.content)
-            ).id!!
-        )
+    fun add(newPost: NewPost): PostId {
+        return PostId(doAdd(newPost).id!!)
     }
 
     @Transactional
     fun addWithMeta(newPost: NewPost): PostId {
-        val postEntity = postJpaRepository.save(
-            PostEntity(newPost.title, newPost.content)
-        )
+        val postEntity = doAdd(newPost)
         postMetaJpaRepository.save(PostMetaEntity(postId = postEntity.id!!))
         return PostId(postEntity.id!!)
     }
 
+    private fun doAdd(newPost: NewPost): PostEntity =
+        postJpaRepository.save(
+            PostEntity(
+                title = newPost.title,
+                content = newPost.content,
+            ),
+        )
+
     fun exists(postId: PostId): Boolean {
-        return postJpaRepository.existsByIdAndDeletedIsFalse(postId.value)
+        return postJpaRepository.existsById(postId.value)
     }
 
-    fun findWithoutMeta(query: PostListQuery): List<Post> {
+    fun find(query: PostListQuery): List<Post> {
         return when (query.sortType) {
-            PostSortType.CREATED_AT -> postJpaRepository.findListByOrderByCreatedAt(
-                page = query.page - 1, size = query.size, order = query.order
-            )
+            PostSortType.CREATED_AT ->
+                postJpaRepository.findListByOrderByCreatedAt(
+                    page = query.page - 1,
+                    size = query.size,
+                    order = query.order,
+                )
 
-            PostSortType.LIKE_COUNT -> postLikeJpaRepository.findPostIdsOrderByLikeCount(
-                page = query.page - 1, size = query.size, order = query.order
-            ).let { postJpaRepository.findAllById(it) }
+            PostSortType.LIKE_COUNT ->
+                postLikeJpaRepository.findPostIdsOrderByLikeCount(
+                    page = query.page - 1,
+                    size = query.size,
+                    order = query.order,
+                ).let { postJpaRepository.findAllById(it) }
         }.map {
-            Post(
-                id = PostId(it.id!!),
-                title = it.title,
-                content = it.content,
-                createdAt = it.createdAt!!
-            )
+            mapEntityToPost(it)
         }
     }
 
     fun findWithMeta(query: PostListQuery): List<Post> {
         return when (query.sortType) {
-            PostSortType.CREATED_AT -> postJpaRepository.findListByOrderByCreatedAt(
-                page = query.page - 1, size = query.size, order = query.order
-            )
+            PostSortType.CREATED_AT ->
+                postJpaRepository.findListByOrderByCreatedAt(
+                    page = query.page - 1,
+                    size = query.size,
+                    order = query.order,
+                )
 
-            PostSortType.LIKE_COUNT -> postMetaJpaRepository.findPostIdsOrderByLikeCount(
-                page = query.page - 1, size = query.size, order = query.order
-            ).let { postJpaRepository.findAllById(it) }
+            PostSortType.LIKE_COUNT ->
+                postMetaJpaRepository.findPostIdsOrderByLikeCount(
+                    page = query.page - 1,
+                    size = query.size,
+                    order = query.order,
+                ).let { postJpaRepository.findAllById(it) }
         }.map {
-            Post(
-                id = PostId(it.id!!),
-                title = it.title,
-                content = it.content,
-                createdAt = it.createdAt!!
-            )
+            mapEntityToPost(it)
         }
     }
+
+    private fun mapEntityToPost(entity: PostEntity): Post =
+        Post(
+            id = PostId(entity.id!!),
+            title = entity.title,
+            content = entity.content,
+            createdAt = entity.createdAt!!,
+        )
 }

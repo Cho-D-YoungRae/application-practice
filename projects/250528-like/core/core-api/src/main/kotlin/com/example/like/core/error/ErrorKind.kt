@@ -1,7 +1,6 @@
 package com.example.like.core.error
 
 enum class ErrorKind {
-
     SERVER_ERROR,
     UNAVAILABLE,
     VALIDATION_FAILED,
@@ -9,5 +8,4 @@ enum class ErrorKind {
     DUPLICATED,
     FORBIDDEN,
     ILLEGAL_STATE,
-    ;
 }

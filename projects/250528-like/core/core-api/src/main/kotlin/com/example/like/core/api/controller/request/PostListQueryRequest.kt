@@ -10,13 +10,13 @@ data class PostListQueryRequest(
     @Positive val page: Int?,
     @Positive @Max(100) val size: Int?,
     val order: ListOrder?,
-    val sortType: PostSortType?
+    val sortType: PostSortType?,
 ) {
-
-    fun toPostListQuery() = PostListQuery(
-        page = this.page ?: PostListQuery().page,
-        size = this.size ?: PostListQuery().size,
-        order = this.order ?: PostListQuery().order,
-        sortType = this.sortType ?: PostListQuery().sortType
-    )
+    fun toPostListQuery() =
+        PostListQuery(
+            page = this.page ?: PostListQuery().page,
+            size = this.size ?: PostListQuery().size,
+            order = this.order ?: PostListQuery().order,
+            sortType = this.sortType ?: PostListQuery().sortType,
+        )
 }

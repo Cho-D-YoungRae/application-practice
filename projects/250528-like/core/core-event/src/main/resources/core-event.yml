@@ -4,11 +4,17 @@ spring:
     producer:
       acks: -1
       retries: 3
-      value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         min.insync.replicas: 2
     consumer:
-      key-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      group-id: worker
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        auto.offset.reset: none
     listener:
       type: batch
       ack-mode: batch
@@ -16,7 +22,7 @@ spring:
 app:
   event:
     post-like:
-      topic-name: ${POST_LIKE_TOPIC_NAME}
+      topic-name: ${POST_LIKE_TOPIC_NAME:core.post-like}
 
 ---
 spring:

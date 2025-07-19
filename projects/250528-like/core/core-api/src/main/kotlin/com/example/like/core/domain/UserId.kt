@@ -1,3 +1,4 @@
 package com.example.like.core.domain
 
-data class UserId(val value: Long)
+@JvmInline
+value class UserId(val value: Long)

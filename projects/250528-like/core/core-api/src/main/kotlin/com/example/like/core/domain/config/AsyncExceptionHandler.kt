@@ -6,12 +6,15 @@ import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler
 import org.springframework.boot.logging.LogLevel
 import java.lang.reflect.Method
 
-class AsyncExceptionHandler: AsyncUncaughtExceptionHandler {
-
+class AsyncExceptionHandler : AsyncUncaughtExceptionHandler {
     private val log = LoggerFactory.getLogger(javaClass)
     private val logTemplate = "{} : {}"
 
-    override fun handleUncaughtException(ex: Throwable, method: Method, vararg params: Any?) {
+    override fun handleUncaughtException(
+        ex: Throwable,
+        method: Method,
+        vararg params: Any?,
+    ) {
         if (ex is CoreException) {
             when (ex.errorType.logLevel) {
                 LogLevel.ERROR -> log.error(exceptionLogMessage(ex), ex)
@@ -23,6 +26,5 @@ class AsyncExceptionHandler: AsyncUncaughtExceptionHandler {
         }
     }
 
-    private fun exceptionLogMessage(exception: Throwable) =
-        "[${exception.javaClass.simpleName}]: ${exception.message}"
+    private fun exceptionLogMessage(exception: Throwable) = "[${exception.javaClass.simpleName}]: ${exception.message}"
 }

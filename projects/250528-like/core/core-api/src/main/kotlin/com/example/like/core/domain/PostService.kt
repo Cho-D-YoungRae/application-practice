@@ -1,7 +1,6 @@
 package com.example.like.core.domain
 
 interface PostService {
-
     fun create(newPost: NewPost)
 
     fun getList(query: PostListQuery): List<Post>

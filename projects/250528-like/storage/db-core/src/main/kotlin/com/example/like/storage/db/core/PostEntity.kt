@@ -9,13 +9,12 @@ import jakarta.persistence.Table
 @Table(
     name = "posts",
     indexes = [
-        Index(name = "ix_posts__1", columnList = "deleted, created_at desc")
-    ]
+        Index(name = "ix_posts__1", columnList = "deleted, created_at desc"),
+    ],
 )
 class PostEntity(
     @Column(name = "title", length = 255, nullable = false)
     val title: String,
     @Column(name = "content", length = 4000, nullable = false)
     val content: String,
-): BaseEntity() {
-}
+) : BaseEntity()

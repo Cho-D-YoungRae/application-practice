@@ -7,8 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 
 @ConfigurationPropertiesScan
 @SpringBootApplication
-class CoreDbTest: CoreDbContextTest() {
-
+class CoreDbTest : CoreDbContextTest() {
     @Test
     fun contextLoads() {
     }
