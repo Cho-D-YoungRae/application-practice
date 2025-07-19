@@ -29,3 +29,13 @@ spring:
   config.activate.on-profile: local
   kafka:
     bootstrap-servers: localhost:29092,localhost:39092,localhost:49092
+
+    consumer:
+      properties:
+        auto.offset.reset: latest
+
+app:
+  event:
+    post-like:
+      init:
+        enabled: true
