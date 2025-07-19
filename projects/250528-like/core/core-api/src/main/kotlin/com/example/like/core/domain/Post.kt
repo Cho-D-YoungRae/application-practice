@@ -9,4 +9,5 @@ data class Post(
     val createdAt: LocalDateTime,
 )
 
-data class PostId(val value: Long)
+@JvmInline
+value class PostId(val value: Long)
