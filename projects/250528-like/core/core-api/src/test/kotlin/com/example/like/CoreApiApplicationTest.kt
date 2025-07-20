@@ -1,9 +1,10 @@
 package com.example.like
 
-import com.example.like.core.ContextTest
 import org.junit.jupiter.api.Test
+import org.springframework.boot.test.context.SpringBootTest
 
-class CoreApiApplicationTest : ContextTest() {
+@SpringBootTest
+class CoreApiApplicationTest {
     @Test
     fun contextLoads() {
     }

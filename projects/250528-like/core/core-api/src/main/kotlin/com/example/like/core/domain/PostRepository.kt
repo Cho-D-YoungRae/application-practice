@@ -15,15 +15,15 @@ class PostRepository(
     private val postLikeJpaRepository: PostLikeJpaRepository,
     private val postMetaJpaRepository: PostMetaJpaRepository,
 ) {
-    fun add(newPost: NewPost): PostId {
-        return PostId(doAdd(newPost).id!!)
+    fun add(newPost: NewPost): Post {
+        return mapEntityToPost(doAdd(newPost))
     }
 
     @Transactional
-    fun addWithMeta(newPost: NewPost): PostId {
+    fun addWithMeta(newPost: NewPost): Post {
         val postEntity = doAdd(newPost)
         postMetaJpaRepository.save(PostMetaEntity(postId = postEntity.id!!))
-        return PostId(postEntity.id!!)
+        return mapEntityToPost(postEntity)
     }
 
     private fun doAdd(newPost: NewPost): PostEntity =

@@ -9,8 +9,8 @@ class PostServiceV2(
     private val postRepository: PostRepository,
     private val postLikeRepository: PostLikeRepository,
 ) : PostService {
-    override fun create(newPost: NewPost) {
-        postRepository.addWithMeta(newPost)
+    override fun create(newPost: NewPost): Post {
+        return postRepository.addWithMeta(newPost)
     }
 
     override fun getList(query: PostListQuery): List<Post> {
