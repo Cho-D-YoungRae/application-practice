@@ -13,7 +13,8 @@ class PostLikeEventConsumer(
 
     @KafkaListener(topics = ["\${app.event.post-like.topic-name}"])
     fun postLikeEventListener(events: List<PostLikeEvent>) {
-        log.debug("이벤트 처리. event={}", events)
-        postMetaRepository.likeCountUp(events.map { it.postId })
+        val postIds = events.map { it.postId }
+        log.debug("좋아요 이벤트 처리. postIds={}", postIds)
+        postMetaRepository.likeCountUp(postIds)
     }
 }

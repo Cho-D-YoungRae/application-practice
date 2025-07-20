@@ -7,8 +7,8 @@ import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Positive
 
 data class PostListQueryRequest(
-    @Positive val page: Int?,
-    @Positive @Max(100) val size: Int?,
+    @field:Positive val page: Int?,
+    @field:Positive @field:Max(100) val size: Int?,
     val order: ListOrder?,
     val sortType: PostSortType?,
 ) {

@@ -48,11 +48,15 @@ class PostRepository(
                 )
 
             PostSortType.LIKE_COUNT ->
-                postLikeJpaRepository.findPostIdsOrderByLikeCount(
+                postLikeJpaRepository.findCountsOrderByLikeCount(
                     page = query.page - 1,
                     size = query.size,
                     order = query.order,
-                ).let { postJpaRepository.findAllById(it) }
+                ).associate { it.postId to it.likeCount }
+                    .let { postIdToCount ->
+                        postJpaRepository.findAllById(postIdToCount.keys)
+                            .sortedByDescending { postIdToCount[it.id!!] }
+                    }
         }.map {
             mapEntityToPost(it)
         }

@@ -4,8 +4,8 @@ import com.example.like.core.domain.NewPost
 import jakarta.validation.constraints.NotBlank
 
 data class PostCreateRequest(
-    @NotBlank val title: String,
-    @NotBlank val content: String,
+    @field:NotBlank val title: String,
+    @field:NotBlank val content: String,
 ) {
     fun toNewPost() =
         NewPost(

@@ -25,12 +25,16 @@ class PostLikeJpaRepositoryCustomImpl(
             .fetch()
     }
 
-    override fun findPostIdsOrderByLikeCount(
+    override fun findCountsOrderByLikeCount(
         page: Int,
         size: Int,
         order: ListOrder,
-    ): List<Long> {
-        return queryFactory.select(postLikeEntity.postId)
+    ): List<PostLikeCountProjection> {
+        return queryFactory
+            .select(QPostLikeCountProjection(
+                postLikeEntity.postId,
+                postLikeEntity.postId.count(),
+            ))
             .from(postLikeEntity)
             .join(postEntity).on(postEntity.id.eq(postLikeEntity.postId))
             .groupBy(postLikeEntity.postId)
