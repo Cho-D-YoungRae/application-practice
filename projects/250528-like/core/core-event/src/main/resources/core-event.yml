@@ -4,7 +4,7 @@ spring:
     producer:
       acks: -1
       retries: 3
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         min.insync.replicas: 2
@@ -14,7 +14,8 @@ spring:
       group-id: worker
       properties:
         spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
-        auto.offset.reset: none
+        spring.json.trusted.packages: "*"
+        auto.offset.reset: earliest
     listener:
       type: batch
       ack-mode: batch
@@ -29,10 +30,6 @@ spring:
   config.activate.on-profile: local
   kafka:
     bootstrap-servers: localhost:29092,localhost:39092,localhost:49092
-
-    consumer:
-      properties:
-        auto.offset.reset: latest
 
 app:
   event:

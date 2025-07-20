@@ -11,7 +11,11 @@ class PostLikeEventConsumer(
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
-    @KafkaListener(topics = ["\${app.event.post-like.topic-name}"])
+    @KafkaListener(
+        topics = ["\${app.event.post-like.topic-name}"],
+        batch = "true",
+        concurrency = "10"
+    )
     fun postLikeEventListener(events: List<PostLikeEvent>) {
         val postIds = events.map { it.postId }
         log.debug("좋아요 이벤트 처리. postIds={}", postIds)
