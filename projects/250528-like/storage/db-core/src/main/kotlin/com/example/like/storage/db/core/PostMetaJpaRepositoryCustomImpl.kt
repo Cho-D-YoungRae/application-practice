@@ -10,13 +10,18 @@ class PostMetaJpaRepositoryCustomImpl(
 ) : PostMetaJpaRepositoryCustom {
     private val queryFactory = JPAQueryFactory(entityManager)
 
-    override fun findPostIdsOrderByLikeCount(
+    override fun findPostCountsOrderByLikeCount(
         page: Int,
         size: Int,
         order: ListOrder,
-    ): List<Long> {
+    ): List<PostLikeCountProjection> {
         return queryFactory
-            .select(postMetaEntity.postId)
+            .select(
+                QPostLikeCountProjection(
+                    postMetaEntity.postId,
+                    postMetaEntity.likeCount,
+                ),
+            )
             .from(postMetaEntity)
             .orderBy(postMetaEntity.likeCount.desc())
             .offset((page * size).toLong())
