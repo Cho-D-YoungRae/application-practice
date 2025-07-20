@@ -6,7 +6,6 @@ import org.springframework.core.ParameterizedTypeReference
 import org.springframework.web.client.RestClient
 
 fun main(args: Array<String>) {
-
     val version = getVersionArg(args)
     val restClient = createRestClient()
     val postIds = getPostIds(restClient, version).shuffled()
@@ -20,7 +19,7 @@ fun main(args: Array<String>) {
         println("Like ${postIdsToLike.size} posts for user $userId")
         postIdsToLike.forEach { postId ->
             restClient.put()
-                .uri("${version}/posts/${postId}/like")
+                .uri("$version/posts/$postId/like")
                 .header("User-Id", userId.toString())
                 .retrieve()
                 .body(Unit::class.java)
@@ -35,7 +34,7 @@ fun main(args: Array<String>) {
 
 private fun getPostIds(
     restClient: RestClient,
-    version: String
+    version: String,
 ): List<Long> {
     val postIds = mutableListOf<Long>()
 
@@ -43,11 +42,13 @@ private fun getPostIds(
     var page = 1
     var hasNextPage = true
     while (hasNextPage) {
-        val postResponses = restClient.get()
-            .uri("${version}/posts?page=$page")
-            .retrieve()
-            .body(bodyType)!!
-            .content
+        val postResponses =
+            restClient
+                .get()
+                .uri("$version/posts?page=$page")
+                .retrieve()
+                .body(bodyType)!!
+                .content
         if (postResponses.isEmpty()) {
             hasNextPage = false
         } else {

@@ -3,7 +3,6 @@ package com.example.like
 import com.example.like.core.api.controller.request.PostCreateRequest
 
 fun main(args: Array<String>) {
-
     val version = getVersionArg(args)
     val restClient = createRestClient()
 
@@ -11,10 +10,11 @@ fun main(args: Array<String>) {
 
     val postCount = 1000
     for (i in 1..postCount) {
-        val postCreateRequest = PostCreateRequest(
-            title = "title-$i",
-            content = "content-$i",
-        )
+        val postCreateRequest =
+            PostCreateRequest(
+                title = "title-$i",
+                content = "content-$i",
+            )
         restClient.post()
             .uri("/{version}/posts", version)
             .body(postCreateRequest)

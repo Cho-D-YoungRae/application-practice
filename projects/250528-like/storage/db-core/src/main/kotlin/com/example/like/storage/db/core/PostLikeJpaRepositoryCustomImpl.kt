@@ -31,10 +31,12 @@ class PostLikeJpaRepositoryCustomImpl(
         order: ListOrder,
     ): List<PostLikeCountProjection> {
         return queryFactory
-            .select(QPostLikeCountProjection(
-                postLikeEntity.postId,
-                postLikeEntity.postId.count(),
-            ))
+            .select(
+                QPostLikeCountProjection(
+                    postLikeEntity.postId,
+                    postLikeEntity.postId.count(),
+                ),
+            )
             .from(postLikeEntity)
             .join(postEntity).on(postEntity.id.eq(postLikeEntity.postId))
             .groupBy(postLikeEntity.postId)

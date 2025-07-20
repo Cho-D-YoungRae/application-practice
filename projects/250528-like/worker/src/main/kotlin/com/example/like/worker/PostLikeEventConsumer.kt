@@ -14,7 +14,7 @@ class PostLikeEventConsumer(
     @KafkaListener(
         topics = ["\${app.event.post-like.topic-name}"],
         batch = "true",
-        concurrency = "10"
+        concurrency = "10",
     )
     fun postLikeEventListener(events: List<PostLikeEvent>) {
         val postIds = events.map { it.postId }

@@ -19,17 +19,14 @@ class PostLikeInitializer(
     private val kafkaAdmin: KafkaAdmin,
     private val properties: PostLikeEventProperties,
 ) : ApplicationRunner {
-    
     private val log = LoggerFactory.getLogger(javaClass)
 
     override fun run(args: ApplicationArguments?) {
-        log.info("{} 실행. topicName={}", this.javaClass.simpleName, properties.topicName)
-        kafkaAdmin.createOrModifyTopics(
-            NewTopic(
-                properties.topicName,
-                3,
-                2
-            )
-        )
+        val topicName = properties.topicName
+        log.info("Kafka 토픽 초기화: {}", topicName)
+
+        val newTopic = NewTopic(topicName, 3, 2.toShort())
+
+        kafkaAdmin.createOrModifyTopics(newTopic)
     }
 }

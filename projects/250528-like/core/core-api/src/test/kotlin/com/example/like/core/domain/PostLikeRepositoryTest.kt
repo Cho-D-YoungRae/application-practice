@@ -19,7 +19,6 @@ class PostLikeRepositoryTest(
     private val postJpaRepository: PostJpaRepository,
     private val postMetaJpaRepository: PostMetaJpaRepository,
 ) {
-
     @AfterEach
     fun tearDown() {
         postJpaRepository.deleteAll()

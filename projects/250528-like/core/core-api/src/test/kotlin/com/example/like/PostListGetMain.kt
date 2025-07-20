@@ -5,7 +5,6 @@ import com.example.like.core.api.controller.response.PostResponse
 import org.springframework.core.ParameterizedTypeReference
 
 fun main(args: Array<String>) {
-
     val version = getVersionArg(args)
     val sort = getSortArg(args)
     val restClient = createRestClient()
@@ -19,11 +18,13 @@ fun main(args: Array<String>) {
     val bodyType = object : ParameterizedTypeReference<ListResponse<PostResponse>>() {}
 
     while (hasNextPage) {
-        val postResponses = restClient.get()
-            .uri("${version}/posts?page=$page&sort=$sort&size=$pageSize")
-            .retrieve()
-            .body(bodyType)!!
-            .content
+        val postResponses =
+            restClient
+                .get()
+                .uri("$version/posts?page=$page&sort=$sort&size=$pageSize")
+                .retrieve()
+                .body(bodyType)!!
+                .content
 
         if (postResponses.isEmpty()) {
             hasNextPage = false
