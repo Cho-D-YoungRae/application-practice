@@ -10,6 +10,7 @@ import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobScope
 import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.core.job.builder.JobBuilder
+import org.springframework.batch.core.launch.support.RunIdIncrementer
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.core.step.builder.StepBuilder
 import org.springframework.batch.item.Chunk
@@ -36,6 +37,7 @@ class PostLikeCountJobConfig(
     fun job(): Job {
         return JobBuilder(JOB_NAME, jobRepository)
             .start(step())
+            .incrementer(RunIdIncrementer())
             .build()
     }
 
@@ -43,7 +45,7 @@ class PostLikeCountJobConfig(
     @JobScope
     fun step(): Step {
         return StepBuilder(STEP_NAME, jobRepository)
-            .chunk<PostEntity, PostMetaEntity>(CHUNK_SIZE, txManager)
+            .chunk<PostEntity, PostEntity>(CHUNK_SIZE, txManager)
             .reader(reader())
             .writer(writer())
             .build()
@@ -53,6 +55,7 @@ class PostLikeCountJobConfig(
     @StepScope
     fun reader(entityManagerFactory: EntityManagerFactory? = null): JpaPagingItemReader<PostEntity> {
         return JpaPagingItemReaderBuilder<PostEntity>()
+            .name(STEP_NAME + "ItemReader")
             .entityManagerFactory(entityManagerFactory!!)
             .pageSize(CHUNK_SIZE)
             .transacted(false)
@@ -66,7 +69,7 @@ class PostLikeCountJobConfig(
         postLikeJpaRepository: PostLikeJpaRepository? = null,
         postMetaJpaRepository: PostMetaJpaRepository? = null,
         entityManagerFactory: EntityManagerFactory? = null,
-    ): ItemWriter<PostMetaEntity> {
+    ): PostLikeCountItemWriter {
         val jpaItemWriter =
             JpaItemWriterBuilder<PostMetaEntity>()
                 .entityManagerFactory(entityManagerFactory!!)
@@ -80,13 +83,13 @@ class PostLikeCountJobConfig(
         )
     }
 
-    class PostLikeCountItemWriter(
+    open class PostLikeCountItemWriter(
         private val postLikeJpaRepository: PostLikeJpaRepository,
         private val postMetaJpaRepository: PostMetaJpaRepository,
         private val jpaItemWriter: JpaItemWriter<PostMetaEntity>,
-    ) : ItemWriter<PostMetaEntity>, InitializingBean by jpaItemWriter {
-        override fun write(chunk: Chunk<out PostMetaEntity>) {
-            val postIds = chunk.items.map { it.postId }
+    ) : ItemWriter<PostEntity>, InitializingBean by jpaItemWriter {
+        override fun write(chunk: Chunk<out PostEntity>) {
+            val postIds = chunk.items.map { it.id!! }
 
             val postIdToLikeCount =
                 postLikeJpaRepository
