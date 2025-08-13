@@ -1,4 +1,4 @@
-package com.example.template.core.domain.config
+package com.example.template.core.application.config
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler
 import org.springframework.context.annotation.Configuration

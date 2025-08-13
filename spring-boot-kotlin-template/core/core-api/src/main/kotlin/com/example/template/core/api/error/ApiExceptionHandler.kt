@@ -5,26 +5,41 @@ import com.example.template.core.error.ErrorKind
 import com.example.template.core.error.ErrorType
 import org.springframework.boot.logging.LogLevel
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
+import org.springframework.http.ProblemDetail
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+import java.time.Clock
+import java.time.LocalDateTime
 
 @RestControllerAdvice
-class ApiExceptionHandler: ResponseEntityExceptionHandler() {
+class ApiExceptionHandler(private val clock: Clock): ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(CoreException::class)
-    private fun handleCoreException(ex: CoreException): ResponseEntity<ErrorResponse?> {
+    fun handleCoreException(ex: CoreException): ProblemDetail {
         when (ex.errorType.logLevel) {
             LogLevel.ERROR -> logger.error(exceptionLogMessage(ex), ex)
             LogLevel.WARN -> logger.warn(exceptionLogMessage(ex), ex)
             else -> logger.info(exceptionLogMessage(ex), ex)
         }
-        val status = getHttpStatusCode(ex.errorType.kind)
-        val response = ErrorResponse(ex.errorType)
-        return ResponseEntity
-            .status(status)
-            .body<ErrorResponse>(response)
+        return createProblemDetail(ex.errorType)
+    }
+
+    @ExceptionHandler(Exception::class)
+    fun handleException(ex: Exception): ProblemDetail {
+        logger.error(exceptionLogMessage(ex), ex)
+        return createProblemDetail(ErrorType.DEFAULT_ERROR)
+    }
+
+    private fun exceptionLogMessage(exception: Exception) =
+        "[${exception.javaClass.simpleName}]: ${exception.message}"
+
+    private fun createProblemDetail(errorType: ErrorType): ProblemDetail {
+        val status = getHttpStatusCode(errorType.kind)
+        val problemDetail = ProblemDetail.forStatusAndDetail(status, errorType.message)
+        problemDetail.setProperty("timestamp", LocalDateTime.now(clock))
+        problemDetail.setProperty("errorType", errorType)
+        return problemDetail
     }
 
     private fun getHttpStatusCode(kind: ErrorKind): HttpStatus {
@@ -37,15 +52,4 @@ class ApiExceptionHandler: ResponseEntityExceptionHandler() {
             ErrorKind.FORBIDDEN -> HttpStatus.FORBIDDEN
         }
     }
-
-    @ExceptionHandler(Exception::class)
-    protected fun handleException(ex: Exception): ResponseEntity<ErrorResponse?> {
-        logger.error(exceptionLogMessage(ex), ex)
-        return ResponseEntity
-            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body<ErrorResponse>(ErrorResponse(ErrorType.DEFAULT_ERROR))
-    }
-
-    private fun exceptionLogMessage(exception: Exception) =
-        "[${exception.javaClass.simpleName}]: ${exception.message}"
 }

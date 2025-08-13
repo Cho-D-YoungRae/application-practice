@@ -12,8 +12,11 @@ dependencies {
 
     // JPA
     api("org.springframework.boot:spring-boot-starter-data-jpa")
-    api("com.querydsl:querydsl-jpa:5.0.0:jakarta")
-    kapt("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties["querydsl.version"]}:jakarta")
+    api("io.github.openfeign.querydsl:querydsl-jpa:${property("querydslVersion")}")
+    api("io.github.openfeign.querydsl:querydsl-sql:${property("querydslVersion")}")
+    api("io.github.openfeign.querydsl:querydsl-sql-json:${property("querydslVersion")}")
+    ksp("io.github.openfeign.querydsl:querydsl-ksp-codegen:${property("querydslVersion")}")
+    annotationProcessor("io.github.openfeign.querydsl:querydsl-apt:${property("querydslVersion")}:jakarta")
 
     // DB
     runtimeOnly("com.mysql:mysql-connector-j")

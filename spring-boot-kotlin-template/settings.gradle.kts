@@ -18,6 +18,7 @@ pluginManagement {
     val springDependencyManagementVersion: String by settings
     val asciidoctorConvertVersion: String by settings
     val ktlintVersion: String by settings
+    val kspVersion: String by settings
 
     plugins {
         kotlin("jvm") version kotlinVersion
@@ -28,5 +29,6 @@ pluginManagement {
         id("io.spring.dependency-management") version springDependencyManagementVersion
         id("org.asciidoctor.jvm.convert") version asciidoctorConvertVersion
         id("org.jlleitschuh.gradle.ktlint") version ktlintVersion
+        id("com.google.devtools.ksp") version kspVersion
     }
 }

@@ -3,7 +3,7 @@ package com.example.template.core.api.controller
 import com.example.template.core.api.controller.request.ExampleRequest
 import com.example.template.core.api.controller.response.ExampleResponse
 import com.example.template.core.domain.ExampleData
-import com.example.template.core.domain.ExampleService
+import com.example.template.core.application.ExampleService
 import org.springframework.web.bind.annotation.*
 
 @RestController

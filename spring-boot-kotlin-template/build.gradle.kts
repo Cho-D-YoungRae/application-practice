@@ -7,6 +7,7 @@ plugins {
     id("io.spring.dependency-management")
     id("org.asciidoctor.jvm.convert") apply false
     id("org.jlleitschuh.gradle.ktlint") apply false
+    id("com.google.devtools.ksp")
 }
 
 java {
@@ -35,10 +36,11 @@ subprojects {
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "org.asciidoctor.jvm.convert")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    apply(plugin = "com.google.devtools.ksp")
 
     dependencyManagement {
         imports {
-            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudDependenciesVersion")}")
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
         }
     }
 

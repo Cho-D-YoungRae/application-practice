@@ -1,4 +1,4 @@
-package com.example.template.core.domain.config
+package com.example.template.core.application.config
 
 import com.example.template.core.error.CoreException
 import org.slf4j.LoggerFactory
@@ -9,7 +9,6 @@ import java.lang.reflect.Method
 class AsyncExceptionHandler: AsyncUncaughtExceptionHandler {
 
     private val log = LoggerFactory.getLogger(javaClass)
-    private val logTemplate = "{} : {}"
 
     override fun handleUncaughtException(ex: Throwable, method: Method, vararg params: Any?) {
         if (ex is CoreException) {

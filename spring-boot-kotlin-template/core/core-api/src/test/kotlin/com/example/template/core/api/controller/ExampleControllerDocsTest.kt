@@ -2,7 +2,7 @@ package com.example.template.core.api.controller
 
 import com.example.template.core.api.controller.request.ExampleRequest
 import com.example.template.core.domain.ExampleResult
-import com.example.template.core.domain.ExampleService
+import com.example.template.core.application.ExampleService
 import com.example.template.test.api.docs.RestDocsTest
 import io.mockk.every
 import io.mockk.mockk
