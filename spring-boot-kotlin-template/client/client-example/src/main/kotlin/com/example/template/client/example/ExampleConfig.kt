@@ -3,6 +3,6 @@ package com.example.template.client.example
 import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.context.annotation.Configuration
 
-@EnableFeignClients
+@EnableFeignClients(clients = [ExampleApi::class])
 @Configuration
 internal class ExampleConfig

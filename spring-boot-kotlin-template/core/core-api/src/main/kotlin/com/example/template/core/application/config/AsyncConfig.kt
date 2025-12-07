@@ -9,10 +9,10 @@ import java.util.concurrent.Executor
 
 @Configuration
 @EnableAsync
-class AsyncConfig(private val taskExecutor: TaskExecutor): AsyncConfigurer {
+class AsyncConfig(private val applicationTaskExecutor: TaskExecutor): AsyncConfigurer {
 
     override fun getAsyncExecutor(): Executor {
-        return taskExecutor
+        return applicationTaskExecutor
     }
 
     override fun getAsyncUncaughtExceptionHandler(): AsyncUncaughtExceptionHandler {

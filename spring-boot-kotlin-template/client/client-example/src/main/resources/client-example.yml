@@ -1,7 +1,3 @@
-example:
-  api:
-    url: https://default.example.example
-
 spring.cloud.openfeign:
   client:
     config:
@@ -15,6 +11,11 @@ spring.cloud.openfeign:
   httpclient:
     max-connections: 2000
     max-connections-per-route: 500
+
+app:
+  client:
+    example:
+      url: https://default.example.example
 
 ---
 spring:

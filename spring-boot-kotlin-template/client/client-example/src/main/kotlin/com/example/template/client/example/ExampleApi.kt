@@ -5,7 +5,7 @@ import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
-@FeignClient(value = "example-api", url = "\${example.api.url}")
+@FeignClient(value = "example-api", url = "\${app.client.example.url}")
 internal interface ExampleApi {
 
     @PostMapping(

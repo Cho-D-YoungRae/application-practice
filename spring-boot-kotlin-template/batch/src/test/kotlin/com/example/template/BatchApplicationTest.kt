@@ -1,6 +1,6 @@
 package com.example.template
 
-import com.example.template.batch.test.ContextTest
+import com.example.template.ContextTest
 import org.junit.jupiter.api.Test
 
 class BatchApplicationTest: ContextTest() {

@@ -6,7 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager
 import jakarta.persistence.EntityManagerFactory
 import jakarta.persistence.EntityTransaction
-import org.springframework.batch.item.database.AbstractPagingItemReader
+import org.springframework.batch.infrastructure.item.database.AbstractPagingItemReader
 import org.springframework.dao.DataAccessResourceFailureException
 import org.springframework.util.ClassUtils
 import org.springframework.util.CollectionUtils
@@ -76,19 +76,19 @@ open class QuerydslPagingItemReader<T>(
         if (CollectionUtils.isEmpty(results)) {
             results = CopyOnWriteArrayList()
         } else {
-            results.clear()
+            results?.clear()
         }
     }
 
     protected fun fetchQuery(query: JPQLQuery<T>, tx: EntityTransaction?) {
         if (transacted) {
-            results.addAll(query.fetch())
+            results?.addAll(query.fetch())
             tx?.commit()
         } else {
             val queryResult = query.fetch().toList()
             for (entity in queryResult) {
                 entityManager!!.detach(entity)
-                results.add(entity)
+                results?.add(entity)
             }
         }
     }

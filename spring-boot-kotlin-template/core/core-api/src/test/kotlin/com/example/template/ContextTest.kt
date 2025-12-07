@@ -1,4 +1,4 @@
-package com.example.template.batch.test
+package com.example.template
 
 import org.junit.jupiter.api.Tag
 import org.springframework.boot.test.context.SpringBootTest

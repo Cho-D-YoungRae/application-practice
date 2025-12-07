@@ -1,13 +1,12 @@
 services:
   mysql:
-    image: mysql:8.4.5
-    container_name: template-mysql
+    image: mysql:8.4.7
     ports:
       - "3306:3306"
     environment:
       MYSQL_DATABASE: template
       TZ: Asia/Seoul
-      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_ROOT_PASSWORD: secret
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
@@ -16,16 +15,15 @@ services:
       - ./docker/mysql/etc/mysql/conf.d:/etc/mysql/conf.d # config
       - ./docker/mysql/init:/docker-entrypoint-initdb.d # init
   redis:
-    image: redis:7.4.2
-    container_name: template-redis
+    image: redis:8.4.0
     ports:
       - "6379:6379"
     volumes:
       - ./docker/redis/data:/data
 
   controller-1:
-    image: apache/kafka:latest
-    container_name: template-controller-1
+    image: apache/kafka:4.1.1
+    container_name: controller-1
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: controller
@@ -36,8 +34,8 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
 
   controller-2:
-    image: apache/kafka:latest
-    container_name: template-controller-2
+    image: apache/kafka:4.1.1
+    container_name: controller-2
     environment:
       KAFKA_NODE_ID: 2
       KAFKA_PROCESS_ROLES: controller
@@ -48,8 +46,8 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
 
   controller-3:
-    image: apache/kafka:latest
-    container_name: template-controller-3
+    image: apache/kafka:4.1.1
+    container_name: controller-3
     environment:
       KAFKA_NODE_ID: 3
       KAFKA_PROCESS_ROLES: controller
@@ -60,8 +58,8 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
 
   broker-1:
-    image: apache/kafka:latest
-    container_name: template-broker-1
+    image: apache/kafka:4.1.1
+    container_name: broker-1
     ports:
       - "29092:9092"
     environment:
@@ -80,8 +78,8 @@ services:
       - controller-3
 
   broker-2:
-    image: apache/kafka:latest
-    container_name: template-broker-2
+    image: apache/kafka:4.1.1
+    container_name: broker-2
     ports:
       - "39092:9092"
     environment:
@@ -100,8 +98,8 @@ services:
       - controller-3
 
   broker-3:
-    image: apache/kafka:latest
-    container_name: template-broker-3
+    image: apache/kafka:4.1.1
+    container_name: broker-3
     ports:
       - "49092:9092"
     environment:

@@ -10,12 +10,14 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.support.TransactionTemplate
 import java.time.Duration
 
-private const val MAX_ATTEMPTS = 5
-
 @Component
 class OptimisticLockTemplate(
     private val txTemplate: TransactionTemplate,
 ) {
+    companion object {
+        private const val MAX_ATTEMPTS = 5
+    }
+
     private val log = LoggerFactory.getLogger(javaClass)
     private val retryTemplate =
         RetryTemplateBuilder()

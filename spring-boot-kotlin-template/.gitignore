@@ -39,7 +39,7 @@ out/
 ### Kotlin ###
 .kotlin
 
-### Mackbook ###
+### Macbook ###
 .DS_Store
 
 ### Docker Compose ###

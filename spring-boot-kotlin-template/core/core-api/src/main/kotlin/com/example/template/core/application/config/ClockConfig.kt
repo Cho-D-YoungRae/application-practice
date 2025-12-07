@@ -1,4 +1,4 @@
-package com.aimskr.autob.core.application.config
+package com.example.template.core.application.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

@@ -1,9 +1,49 @@
 spring:
 
+  application.name: batch
+
+  config:
+    import:
+      - logging.yml
+
   profiles:
     active: local
-    include: batch
+    include:
+      - db
 
-logging:
-  level:
-    com.zaxxer.hikari: debug
+  main.web-application-type: none
+
+  batch:
+    job:
+      enabled: true
+      name: ${job.name:healthCheckJob}
+    jdbc:
+      initialize-schema: never
+      isolation-level-for-create: default
+
+  task:
+    execution:
+      thread-name-prefix: "batch-task-"
+      pool:
+        core-size: 10
+        max-size: 10
+        queue-capacity: 10000
+      shutdown:
+        await-termination: true
+        await-termination-period: 10000
+
+---
+spring:
+  config.activate.on-profile: local
+
+---
+spring:
+  config.activate.on-profile: local-dev
+
+---
+spring:
+  config.activate.on-profile: dev
+
+---
+spring:
+  config.activate.on-profile: live

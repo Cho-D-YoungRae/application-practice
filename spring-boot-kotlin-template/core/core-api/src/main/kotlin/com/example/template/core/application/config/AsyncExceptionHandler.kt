@@ -1,27 +1,15 @@
 package com.example.template.core.application.config
 
-import com.example.template.core.error.CoreException
+import com.example.template.core.error.ErrorLogger
 import org.slf4j.LoggerFactory
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler
-import org.springframework.boot.logging.LogLevel
 import java.lang.reflect.Method
 
 class AsyncExceptionHandler: AsyncUncaughtExceptionHandler {
 
-    private val log = LoggerFactory.getLogger(javaClass)
+    private val errorLogger = ErrorLogger.of(LoggerFactory.getLogger(javaClass))
 
     override fun handleUncaughtException(ex: Throwable, method: Method, vararg params: Any?) {
-        if (ex is CoreException) {
-            when (ex.errorType.logLevel) {
-                LogLevel.ERROR -> log.error(exceptionLogMessage(ex), ex)
-                LogLevel.WARN -> log.warn(exceptionLogMessage(ex), ex)
-                else -> log.info(exceptionLogMessage(ex), ex)
-            }
-        } else {
-            log.error(exceptionLogMessage(ex), ex)
-        }
+        errorLogger.log(ex)
     }
-
-    private fun exceptionLogMessage(exception: Throwable) =
-        "[${exception.javaClass.simpleName}]: ${exception.message}"
 }

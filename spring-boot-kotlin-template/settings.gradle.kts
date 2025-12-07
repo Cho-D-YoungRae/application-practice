@@ -7,7 +7,6 @@ include(
     "worker",
     "storage:db-core",
     "client:client-example",
-    "tests:api-docs",
     "support:logging",
     "support:monitoring"
 )
@@ -22,7 +21,6 @@ pluginManagement {
 
     plugins {
         kotlin("jvm") version kotlinVersion
-        kotlin("kapt") version kotlinVersion
         kotlin("plugin.spring") version kotlinVersion
         kotlin("plugin.jpa") version kotlinVersion
         id("org.springframework.boot") version springBootVersion
